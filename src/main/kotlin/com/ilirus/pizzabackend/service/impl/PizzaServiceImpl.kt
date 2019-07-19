@@ -59,7 +59,7 @@ class PizzaServiceImpl : PizzaService {
     @Throws(Exception::class)
     override fun addPizza(pizza: RcPizza): Dto<RcPizza> {
         val res = with(pizza) {
-            dao.addNewPizza(name!!,pictureLink!!, picturePreLink!!, priceSmall!!, priceBig!!, description!!)
+            dao.addNewPizza(name!!,pictureLink!!, picturePreLink!!, priceSmall!!, priceBig!!, description)
         }
         return if(res != 0) {
             Dto(StatusEnum.ADD_PIZZA_SUCCESS)
@@ -72,7 +72,7 @@ class PizzaServiceImpl : PizzaService {
     @Throws(Exception::class)
     override fun updatePizza(pizza: UdPizza): Dto<UdPizza> {
         val res = with(pizza) {
-            dao.updatePizza(id!!, name!!,pictureLink!!, picturePreLink!!, priceSmall!!, priceBig!!, description!!)
+            dao.updatePizza(id!!, name!!,pictureLink!!, picturePreLink!!, priceSmall!!, priceBig!!, description)
         }
         return if(res != 0) {
             Dto(StatusEnum.UPDATE_PIZZA_SUCCESS)

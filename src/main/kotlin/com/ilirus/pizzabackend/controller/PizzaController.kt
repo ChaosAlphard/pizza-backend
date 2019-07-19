@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory
 import org.springframework.web.bind.annotation.*
 import javax.annotation.Resource
 import javax.servlet.http.HttpSession
+import javax.validation.Valid
 
 //@CrossOrigin(maxAge = 3600)
 @RestController
@@ -23,7 +24,14 @@ class PizzaController {
     private val limit: Int = 10
 
     @RequestMapping("/findall")
-    fun findAll() = ser.findAllPizza()
+    fun findAll(): Dto<Pizza> {
+        return try {
+            ser.findAllPizza()
+        } catch (e: Exception) {
+            log.error("Get Data Fail",e)
+            Dto(StatusEnum.GET_DATA_FAIL)
+        }
+    }
 
     @RequestMapping("/find")
     fun findPizza(page: String?): Dto<Pizza> {
@@ -60,55 +68,11 @@ class PizzaController {
         return try {
             ser.findPizzaByID(n)
         } catch (e: Exception) {
+            log.error("Get Data Fail",e)
             Dto(StatusEnum.GET_DATA_FAIL)
         }
     }
 
-    @PutMapping("/newpizza")
-    fun addPizza(pizza: RcPizza?): Dto<RcPizza> {
-        pizza?:return Dto(StatusEnum.LOST_PARAM)
-
-        return try {
-            ser.addPizza(pizza)
-        } catch (e: Exception) {
-            Dto(StatusEnum.GET_DATA_FAIL)
-        }
-    }
-
-    @PostMapping("/editpizza")
-    fun editPizza(pizza: UdPizza?): Dto<UdPizza> {
-        pizza?:return Dto(StatusEnum.LOST_PARAM)
-
-        return try {
-            ser.updatePizza(pizza)
-        } catch (e: Exception) {
-            Dto(StatusEnum.GET_DATA_FAIL)
-        }
-    }
-
-    @DeleteMapping("/deletepizza")
-    fun deletePizza(id: String?): Dto<RcPizza> {
-        id?:return Dto(StatusEnum.LOST_PARAM)
-
-        val n = try {
-            id.toInt()
-        } catch (e: Exception) {
-            return Dto(StatusEnum.WRONG_PARAM)
-        }
-        return try {
-            ser.deletePizza(n)
-        } catch (e: Exception) {
-            Dto(StatusEnum.GET_DATA_FAIL)
-        }
-    }
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-//not in use////////////////////////////////////////////////////////////////////
     @RequestMapping("/findbyname")
     fun findByPizzaName(query: String?, page: String?): Dto<Pizza> {
         val begin = try {
@@ -124,6 +88,50 @@ class PizzaController {
         }
     }
 
+    @PutMapping("/new")
+    fun addPizza(@Valid @RequestBody pizza: RcPizza?): Dto<RcPizza> {
+        pizza?:return Dto(StatusEnum.LOST_PARAM)
+
+        return try {
+            ser.addPizza(pizza)
+        } catch (e: Exception) {
+            log.error("Get Data Fail",e)
+            Dto(StatusEnum.GET_DATA_FAIL)
+        }
+    }
+
+    @PostMapping("/edit")
+    fun editPizza(@Valid @RequestBody pizza: UdPizza?): Dto<UdPizza> {
+        pizza?:return Dto(StatusEnum.LOST_PARAM)
+
+        return try {
+            ser.updatePizza(pizza)
+        } catch (e: Exception) {
+            log.error("Get Data Fail",e)
+            Dto(StatusEnum.GET_DATA_FAIL)
+        }
+    }
+
+    @DeleteMapping("/delete")
+    fun deletePizza(id: String?): Dto<RcPizza> {
+        id?:return Dto(StatusEnum.LOST_PARAM)
+
+        val n = try {
+            id.toInt()
+        } catch (e: Exception) {
+            return Dto(StatusEnum.WRONG_PARAM)
+        }
+        return try {
+            ser.deletePizza(n)
+        } catch (e: Exception) {
+            log.error("Get Data Fail",e)
+            Dto(StatusEnum.GET_DATA_FAIL)
+        }
+    }
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//not in use////////////////////////////////////////////////////////////////////
     @RequestMapping("/findbyprice")
     fun findByPizzaPrice(min: String?, max: String?, page: String?): Dto<Pizza> {
         min?.let { max?.let {

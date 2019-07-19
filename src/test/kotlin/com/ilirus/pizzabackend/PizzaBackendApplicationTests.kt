@@ -22,13 +22,16 @@ class PizzaBackendApplicationTests {
 
     @Test
     fun contextLoads() {
-        val id = 1
-        val res = with(1) {
+        val obj = object {
+            val id = 2
+            val name = "Ilirus"
+        }
+        val res = with(obj) {
             return@with when {
-                id==1 -> return@with 1
+                id == 1 -> return@with 1
+                name == "Ilirus" -> return@with 2
                 else -> 0
             }
-            2
         }
         println(res)
     }

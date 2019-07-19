@@ -38,7 +38,7 @@ class CROSInterceptor : WebMvcConfigurationSupport() {
                 } else {
                     response.characterEncoding = "UTF-8"
                     response.contentType = "text/html; charset=UTF-8"
-                    response.writer.print("""{"code": "403", "msg": "权限不足"}""")
+                    response.writer.print("""{"code": 403, "msg": "权限不足"}""")
                     response.writer.flush()
                     response.writer.close()
                     false
@@ -47,9 +47,9 @@ class CROSInterceptor : WebMvcConfigurationSupport() {
         }
         registry.addInterceptor(role)
                 .addPathPatterns(mutableListOf(
-                    "/pizza/newpizza",
-                    "/pizza/editpizza",
-                    "/pizza/deletepizza"
+                    "/pizza/new",
+                    "/pizza/edit",
+                    "/pizza/delete"
                 ))
     }
 }

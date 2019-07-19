@@ -39,7 +39,7 @@ interface PizzaDao {
                     @Param("picturePreLink") picturePreLink: String,
                     @Param("priceSmall") priceSmall: Int,
                     @Param("priceBig") priceBig: Int,
-                    @Param("description") description: String): Int
+                    @Param("description") description: String?): Int
 
     @Update("""update pizza set name=#{name}, pictureLink=#{pictureLink}, picturePreLink=#{picturePreLink},
             priceSmall=#{priceSmall}, priceBig=#{priceBig}, description=#{description} where id=#{id}""")
@@ -49,7 +49,7 @@ interface PizzaDao {
                     @Param("picturePreLink") picturePreLink: String,
                     @Param("priceSmall") priceSmall: Int,
                     @Param("priceBig") priceBig: Int,
-                    @Param("description") description: String): Int
+                    @Param("description") description: String?): Int
 
     @Delete("delete from pizza where id=#{id}")
     fun deletePizza(@Param("id") id: Int): Int

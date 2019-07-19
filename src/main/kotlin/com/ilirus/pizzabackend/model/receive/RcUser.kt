@@ -8,7 +8,7 @@ import javax.validation.constraints.Size
  */
 class RcUser {
     @NotBlank
-    @Size(min = 1, max = 24, message = "不超过24个字符")
+    @Size(min = 1, max = 24, message = "1-24个字符")
     var name: String? = null
 
     @NotBlank
@@ -16,7 +16,7 @@ class RcUser {
     var password: String? = null
 
     @NotBlank
-    @Size(min = 3, max = 64, message = "不超过64个字符")
+    @Size(min = 3, max = 64, message = "3-64个字符")
     var email: String? = null
 
     @NotBlank
@@ -24,7 +24,7 @@ class RcUser {
     var phone: String? = null
 
     @NotBlank
-    @Size(min = 1, max = 128, message = "不超过128个字符")
+    @Size(min = 1, max = 128, message = "1-128个字符")
     var address: String? = null
 }
 

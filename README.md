@@ -11,7 +11,7 @@
 - 数据库
   - MySQL
 - 运行环境
-  - JDK8
+  - JDK 8
 
 ## 接口
 - `/pizza` (GET)

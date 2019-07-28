@@ -12,7 +12,9 @@ import javax.annotation.Resource
 import javax.servlet.http.HttpSession
 import javax.validation.Valid
 
-//@CrossOrigin(maxAge = 3600)
+@CrossOrigin(origins = ["http://erina.gitee.io", "http://localhost:8080"],
+maxAge = 3600, allowCredentials = "true", methods = [RequestMethod.GET,
+RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS])
 @RestController
 @RequestMapping("/pizza")
 class PizzaController {
@@ -23,7 +25,7 @@ class PizzaController {
 
     private val limit: Int = 10
 
-    @RequestMapping("/findall")
+    @GetMapping("/findall")
     fun findAll(): Dto<Pizza> {
         return try {
             ser.findAllPizza()
@@ -33,7 +35,7 @@ class PizzaController {
         }
     }
 
-    @RequestMapping("/find")
+    @GetMapping("/find")
     fun findPizza(page: String?): Dto<Pizza> {
         // val begin = if(page.isNullOrBlank()){
         //     0
@@ -56,7 +58,7 @@ class PizzaController {
         }
     }
 
-    @RequestMapping("/findbyid")
+    @GetMapping("/findbyid")
     fun findPizzaByID(id: String?): Dto<Pizza> {
         id?:return Dto(StatusEnum.LOST_PARAM)
 
@@ -73,7 +75,7 @@ class PizzaController {
         }
     }
 
-    @RequestMapping("/findbyname")
+    @GetMapping("/findbyname")
     fun findByPizzaName(query: String?, page: String?): Dto<Pizza> {
         val begin = try {
             page?.toInt()
@@ -89,7 +91,10 @@ class PizzaController {
     }
 
     @PutMapping("/new")
-    fun addPizza(@Valid @RequestBody pizza: RcPizza?): Dto<RcPizza> {
+    fun addPizza(@Valid @RequestBody pizza: RcPizza?, session: HttpSession): Dto<RcPizza> {
+        if(session.getAttribute("level") != 2) {
+            return Dto(StatusEnum.PERMISSION_DENIED)
+        }
         pizza?:return Dto(StatusEnum.LOST_PARAM)
 
         return try {
@@ -101,7 +106,10 @@ class PizzaController {
     }
 
     @PostMapping("/edit")
-    fun editPizza(@Valid @RequestBody pizza: UdPizza?): Dto<UdPizza> {
+    fun editPizza(@Valid @RequestBody pizza: UdPizza?, session: HttpSession): Dto<UdPizza> {
+        if(session.getAttribute("level") != 2) {
+            return Dto(StatusEnum.PERMISSION_DENIED)
+        }
         pizza?:return Dto(StatusEnum.LOST_PARAM)
 
         return try {
@@ -113,7 +121,10 @@ class PizzaController {
     }
 
     @DeleteMapping("/delete")
-    fun deletePizza(id: String?): Dto<RcPizza> {
+    fun deletePizza(id: String?, session: HttpSession): Dto<RcPizza> {
+        if(session.getAttribute("level") != 2) {
+            return Dto(StatusEnum.PERMISSION_DENIED)
+        }
         id?:return Dto(StatusEnum.LOST_PARAM)
 
         val n = try {

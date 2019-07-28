@@ -7,7 +7,7 @@ spring:
 logging:
   path: ./log
   level:
-    root: info
+    root: warn
 
 server:
   port: 8082

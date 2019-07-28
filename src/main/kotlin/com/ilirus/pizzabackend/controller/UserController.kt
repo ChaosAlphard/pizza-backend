@@ -8,11 +8,12 @@ import com.ilirus.pizzabackend.service.UserService
 import org.apache.commons.logging.LogFactory
 import org.springframework.web.bind.annotation.*
 import javax.annotation.Resource
-import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
 import javax.validation.Valid
 
-//@CrossOrigin(maxAge = 3600)
+@CrossOrigin(origins = ["http://erina.gitee.io", "http://localhost:8080"],
+maxAge = 3600, allowCredentials = "true",
+methods = [RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS])
 @RestController
 @RequestMapping("/user")
 class UserController {
@@ -44,7 +45,8 @@ class UserController {
 
     @RequestMapping("/logout")
     fun logout(session: HttpSession) {
-        session.invalidate()
+        session.removeAttribute("id")
+        session.removeAttribute("level")
     }
 
     @PostMapping("/register")
